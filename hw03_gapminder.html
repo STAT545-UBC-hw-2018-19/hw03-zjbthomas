@@ -312,6 +312,32 @@ $(document).ready(function () {
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#bring-rectangular-data-in">Bring rectangular data in</a></li>
+<li><a href="#tasks">Tasks</a><ul>
+<li><a href="#get-the-maximum-and-minimum-of-gdp-per-capita-for-all-continents.">Get the maximum and minimum of GDP per capita for all continents.</a></li>
+<li><a href="#look-at-the-spread-of-gdp-per-capita-within-the-continents.">Look at the spread of GDP per capita within the continents.</a></li>
+<li><a href="#compute-a-trimmed-mean-of-life-expectancy-for-different-years.-or-a-weighted-mean-weighting-by-population.-just-try-something-other-than-the-plain-vanilla-mean.">Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.</a></li>
+<li><a href="#how-is-life-expectancy-changing-over-time-on-different-continents">How is life expectancy changing over time on different continents?</a></li>
+<li><a href="#report-the-absolute-andor-relative-abundance-of-countries-with-low-life-expectancy-over-time-by-continent-compute-some-measure-of-worldwide-life-expectancy---you-decide---a-mean-or-median-or-some-other-quantile-or-perhaps-your-current-age.-then-determine-how-many-countries-on-each-continent-have-a-life-expectancy-less-than-this-benchmark-for-each-year.">Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.</a></li>
+<li><a href="#find-countries-with-interesting-stories.-open-ended-and-therefore-hard.-promising-but-unsuccessful-attempts-are-encouraged.-this-will-generate-interesting-questions-to-follow-up-on-in-class.">Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.</a><ul>
+<li><a href="#is-there-a-relationship-between-lifeexp-and-pop">Is there a relationship between lifeExp and pop?</a></li>
+<li><a href="#what-is-the-overall-gdp-of-each-country-and-how-do-they-change-over-the-years">What is the overall GDP of each country and how do they change over the years?</a></li>
+<li><a href="#does-overall-gdp-affect-life-expectancy">Does overall GDP affect life expectancy?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#but-i-want-to-do-more">But I want to do more!</a><ul>
+<li><a href="#layout-stretch-goal-get-table-and-figure-side-by-side.">Layout stretch goal: get table and figure side-by-side.</a></li>
+<li><a href="#table-stretch-goal-there-are-some-really-nice-fancy-table-helper-packages.">Table stretch goal: there are some really nice fancy table helper packages.</a><ul>
+<li><a href="#pander">pander</a></li>
+<li><a href="#xtable">xtable</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#notes">Notes</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
 
 <div id="bring-rectangular-data-in" class="section level1">
 <h1>Bring rectangular data in</h1>
@@ -319,12 +345,12 @@ $(document).ready(function () {
 library(gapminder)
 ## load tidyverse
 library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages -------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## -- Attaching packages ----------------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
 <pre><code>## v ggplot2 3.0.0     v purrr   0.2.5
 ## v tibble  1.4.2     v dplyr   0.7.6
 ## v tidyr   0.8.1     v stringr 1.3.1
 ## v readr   1.1.1     v forcats 0.3.0</code></pre>
-<pre><code>## -- Conflicts ----------------------------------------------------------------------- tidyverse_conflicts() --
+<pre><code>## -- Conflicts -------------------------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 </div>
@@ -13662,7 +13688,7 @@ pander(means)</code></pre>
 <h3>xtable</h3>
 <pre class="r"><code>print(xtable(means), type=&quot;html&quot;)</code></pre>
 <!-- html table generated in R 3.5.1 by xtable 1.8-3 package -->
-<!-- Tue Sep 25 22:24:59 2018 -->
+<!-- Wed Sep 26 11:08:02 2018 -->
 <table border="1">
 <tr>
 <th>

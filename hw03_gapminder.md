@@ -5,6 +5,7 @@ date: "Sept 25, 2018"
 output:
   html_document:
     keep_md: true
+    toc: true
 ---
 
 # Bring rectangular data in
@@ -17,7 +18,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages -------------------------------------------------------------------- tidyverse 1.2.1 --
+## -- Attaching packages ----------------------------------------------------------------------------------- tidyverse 1.2.1 --
 ```
 
 ```
@@ -28,7 +29,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Conflicts ----------------------------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts -------------------------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -2613,7 +2614,7 @@ print(xtable(means), type="html")
 ```
 
 <!-- html table generated in R 3.5.1 by xtable 1.8-3 package -->
-<!-- Tue Sep 25 22:24:59 2018 -->
+<!-- Wed Sep 26 11:08:02 2018 -->
 <table border=1>
 <tr> <th>  </th> <th> year </th> <th> vanilla_mean_lifeExp </th> <th> weighted_mean_lifeExp_by_pop </th>  </tr>
   <tr> <td align="right"> 1 </td> <td align="right"> 1952 </td> <td align="right"> 49.06 </td> <td align="right"> 48.94 </td> </tr>
