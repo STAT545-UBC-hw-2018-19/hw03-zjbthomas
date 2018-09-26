@@ -1,0 +1,180 @@
+---
+title: "STAT 545A Homework 3"
+author: Junbin ZHANG
+date: Sept 25, 2018
+output:
+  github_document:
+    toc: true
+---
+
+# Bring rectangular data in
+```{r}
+## load gapminder
+library(gapminder)
+## load tidyverse
+library(tidyverse)
+```
+
+# Tasks
+
+## Get the maximum and minimum of GDP per capita for all continents.
+
+We first create a table to show the maximum and minimum of GDP per capita for all continents.
+
+```{r}
+# get data of maximum and minimum of GDP per capita for all continents
+data <- gapminder %>% 
+  # group by continent
+  group_by(continent) %>% 
+  # calculate summaries
+  summarize(
+    max_gdpPercap = max(gdpPercap),
+    min_gdpPercap = min(gdpPercap),
+  )
+# get corresponding rows for the maximum data
+max_country <- gapminder %>% 
+  # filter data with maximum GDP per capita
+  filter(gdpPercap %in% data$max_gdpPercap) %>% 
+  # create column with country and year
+  mutate(
+    max_country_year = paste(country, year, sep=",")
+  ) %>% 
+  # make sure the order is the same as "data"
+  arrange(continent) %>% 
+  # select only mutated column
+  select(max_country_year)
+
+# get corresponding rows for the minimum data
+min_country <- gapminder %>% 
+  # filter data with minimum GDP per capita
+  filter(gdpPercap %in% data$min_gdpPercap) %>% 
+  # create column with country and year
+  mutate(
+    min_country_year = paste(country, year, sep=",")
+  ) %>% 
+  # make sure the order is the same as "data"
+  arrange(continent) %>% 
+  # select only mutated column
+  select(min_country_year)
+
+# display table with combined data
+data.frame(continent=data$continent, max_gdpPercap=data$max_gdpPercap, max_country, min_gdpPercap=data$min_gdpPercap, min_country) %>% 
+  knitr::kable()
+```
+
+Let's show them on a scatterplot.
+
+```{r}
+gapminder %>%
+  # create a new column to indicate whether a data point is maximum or minimum gdpPercap
+  mutate(
+    max_min_gdpPercap=ifelse(
+      gdpPercap %in% data$max_gdpPercap,
+      "Maximum",
+      ifelse(
+        gdpPercap %in% data$min_gdpPercap,
+        "Minimum",
+        "Others"
+        )
+      )
+  ) %>% 
+  # year as x axis and gdpPercap as y axis, use max_min_gdpPercap as color
+  ggplot(aes(year, gdpPercap, color=max_min_gdpPercap), alpha=0.1) +
+  # make it a scatterplot
+  geom_point() +
+  # facetting using continent
+  facet_wrap(~continent, scales="free_y")
+```
+
+From the table and figure, we notice the maximum and minimum values of gdpPercap are different in different continents. They also appear in different countries and years. The scatterplot provides a better view, except we cannot get which countries has the maximum/minimum gdpPercap.
+
+## Look at the spread of GDP per capita within the continents.
+
+Let's show a table with the range, mean and deviation of GDP per capita within the continents.
+
+```{r}
+gapminder %>%
+  # group by continent
+  group_by(continent) %>%
+  # calculate summaries
+  summarize(
+    # calculate minimum
+    min_gdpPercap=min(gdpPercap),
+    # calculate maximum
+    max_gdpPercap=min(gdpPercap),
+    # calculate mean
+    mean_gdpPercap=mean(gdpPercap),
+    # calculate standard deviation
+    sd_gdpPercap=sd(gdpPercap)
+  ) %>% 
+  # display the table
+  knitr::kable()
+```
+
+
+We can use histogram and boxplot to do the same task. Notice that in histogram, `scales="free"` is needed to scale both x and y axes, so the figure should be clearer. 
+
+```{r}
+gapminder %>% 
+  # gdpPercap as x axis
+  ggplot(aes(gdpPercap, color=continent)) +
+  # facetting by continent
+  facet_wrap(~continent, scales="free") +
+  # make it a histogram
+  geom_histogram(bins=30)
+```
+
+```{r}
+gapminder %>% 
+  # continent as x axis, gdpPercap as y axis
+  ggplot(aes(x=continent, y=gdpPercap)) +
+  # make it a boxplot
+  geom_boxplot()
+```
+
+A table provides accurate numbers on the spread of GDP per capita, but it cannot show the details inside the data. While histogram and boxplot provide better summaries (e.g. the boxplot contains outliers). Comparing histogram and boxplot, histogram only counts data within the same bins, while boxplot also shows some statistics facts (like quartiles) of data.
+
+## Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.
+
+Let's calculate the weighted mean of life expectancy, weighting by population.
+
+```{r}
+means <- gapminder %>% 
+  # group by year
+  group_by(year) %>% 
+  # calculate vanilla mean and weighted mean
+  summarize(
+    vanilla_mean_lifeExp = mean(lifeExp),
+    weighted_mean_lifeExp_by_pop = weighted.mean(lifeExp, pop)
+  )
+
+# display as table
+means %>% 
+  knitr::kable()
+```
+
+Let's draw some line plots to show them.
+
+```{r}
+means %>% 
+  ggplot() +
+  geom_line(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
+  geom_point(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
+  geom_line(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
+  geom_point(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
+  scale_color_discrete("Mean type")
+  
+```
+
+
+## How is life expectancy changing over time on different continents?
+
+## Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+
+## Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.
+
+# But I want to do more!
+
+# Notes
+
+# References
