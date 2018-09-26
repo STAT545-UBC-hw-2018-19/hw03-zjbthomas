@@ -1,10 +1,11 @@
 ---
 title: "STAT 545A Homework 3"
-author: Junbin ZHANG
-date: Sept 25, 2018
+author: "Junbin ZHANG"
+date: "Sept 25, 2018"
 output:
-  github_document:
-    toc: true
+  pdf_document: default
+  html_document:
+    keep_md: yes
 ---
 
 # Bring rectangular data in
@@ -158,23 +159,264 @@ Let's draw some line plots to show them.
 ```{r}
 means %>% 
   ggplot() +
+  # make a line plot with points for vanilla_mean_lifeExp
   geom_line(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
   geom_point(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
+  # make a line plot with points for weighted_mean_lifeExp_by_pop
   geom_line(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
   geom_point(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
+  # add legend for two lines
   scale_color_discrete("Mean type")
   
 ```
 
+Basically, the life expectancy tends to increase thoughout the years.
 
 ## How is life expectancy changing over time on different continents?
 
+Let's first use a table to show the trend of how life expectancy changes. We also calculate the changes in every five years.
+
+```{r}
+changes <- gapminder %>% 
+  # need to group by continent and year
+  group_by(continent, year) %>% 
+  # use mean as benchmark
+  summarize(
+    mean_lifeExp = mean(lifeExp)
+  ) %>% 
+  # calculate absolute change and relative change
+  mutate(
+    change_in_five_years = mean_lifeExp - lag(mean_lifeExp)
+  )
+
+# display the table
+changes %>% 
+  knitr::kable()
+```
+
+Let's plot it out.
+
+```{r}
+changes %>% 
+  # year as x axis and mean_lifeExp as y axis
+  ggplot(aes(year, mean_lifeExp)) +
+  # facetting by continent
+  facet_wrap(~continent, scales="free_y")+
+  # make a line plot with points
+  geom_line() +
+  geom_point()
+```
+
+```{r}
+changes %>%
+  # remove NA values
+  filter(change_in_five_years != "NA") %>% 
+  # year as x axis and change_in_five_years as y axis
+  ggplot(aes(year, change_in_five_years)) +
+  # facetting by continent
+  facet_wrap(~continent, scales="free_y")+
+  # make a line plot with points
+  geom_line() +
+  geom_point()
+```
+
+From the above two figures, we get to know:
+- Except Africa suffered from a decrement between 1997 and 2002, all the continents have increment throughout the years.
+- Generally speaking, except Oceania, the speeds of lifeExp grows of other continents become smaller and smaller.
+
 ## Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+
+Let's first know the range and mean of worldwide life expectancy, so we can decide a benchmark.
+
+```{r}
+range(gapminder$lifeExp)
+```
+
+```{r}
+mean(gapminder$lifeExp)
+```
+
+The mean is somehow near the middle of the range, so we can use it as a benchmark.
+
+Let's first check if the lifeExp of a country in a certain year is higher/lower than the average.
+
+
+```{r}
+lifeExpCheck <- gapminder %>% 
+  # group by country and year
+  group_by(country, year) %>% 
+  # check if a country has low lifeExp
+  mutate(
+    low_lifeExp = lifeExp < mean(gapminder$lifeExp)
+  ) %>% 
+  # select only necessary columns
+  select(country, year, lifeExp, low_lifeExp)
+
+# display the table
+lifeExpCheck %>% 
+  knitr::kable()
+```
+
+To show the abundance of countries with low lifeExp, we can simply count the number of TRUE/FALSE in low_lifeExp. A bar plot is suitable in this case.
+
+```{r}
+lifeExpCheck %>% 
+  # year as x axis, and show the portion of low_lifeExp
+  ggplot(aes(x=year, fill=low_lifeExp)) +
+  # make it a bar plot
+  geom_bar()
+```
+
+From the figure, we know that the numbers of countries with low lifeExp become smaller and smller over the years.
 
 ## Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.
 
+Let's try to list data in countries in Americas first, and see if we can find something intersting.
+
+```{r}
+countries <- gapminder %>% 
+  # filter continent as Americas
+  filter(continent == "Americas") %>%
+  # remove column continent
+  select(-continent) %>% 
+  # group by country and year
+  group_by(country, year)
+
+# display the table
+countries %>% 
+  knitr::kable()
+```
+
+We try to explore the following things.
+
+### Is there a relationship between lifeExp and pop?
+
+```{r}
+countries %>% 
+  # pop as x axis and lifeExp as y axis
+  ggplot(aes(x=pop, y=lifeExp)) +
+  # scale lifeExp by log10
+  scale_y_log10() +
+  # facetting by country
+  facet_wrap(~country, scales="free") +
+  # make a line plot
+  geom_line()
+```
+
+Interestingly, when the population gets larger, the life expectancy also becomes larger!
+
+### What is the overall GDP of each country and how do they change over the years?
+
+```{r}
+countries_with_overall_gdp <- countries %>% 
+  # calculate overall GDP
+  mutate(
+    overall_gdp = pop * gdpPercap
+  )
+
+countries_with_overall_gdp %>% 
+  # year as x axis and overall_gdp as y axis
+  ggplot(aes(x=year, y=overall_gdp)) +
+  # facetting by country
+  facet_wrap(~country, scales="free") +
+  # make a line plot
+  geom_line()
+```
+
+So we can notice some flactuations in these resultant lines. But it is a trend that every country has an increasing overall GDP.
+
+### Does overall GDP affect life expectancy?
+
+```{r}
+countries_with_overall_gdp %>% 
+  # overall_gdp as x axis and lifeExp as y axis
+  ggplot(aes(x=overall_gdp, y=lifeExp)) +
+  # facetting by country
+  facet_wrap(~country, scales="free") +
+  # scale overall_gdp by log10
+  scale_x_log10() +
+  # make it a line plot
+  geom_line()
+```
+
+Though we notice some flactuations in these lines, we somehow can conclude that when the overall GDP of a country is high, the lifeExp is also high.
+
 # But I want to do more!
+
+## Layout stretch goal: get table and figure side-by-side.
+
+**The following part only works for HTML, please refer to [hw03_gapminder.html](hw03_gapminder.html) if you are reading GitHub Markdown.**
+
+We directly use code form the third task, but put the table and figure side-by-side.
+
+<style type="text/css">
+.twoC {width: 100%}
+.clearer {clear: both}
+.twoC .table {max-width: 50%; float: left}
+.twoC img {max-width: 50%; float: right}
+</style>
+
+<div class="twoC">
+
+```{r results='asis', echo=FALSE}
+means <- gapminder %>% 
+  # group by year
+  group_by(year) %>% 
+  # calculate vanilla mean and weighted mean
+  summarize(
+    vanilla_mean_lifeExp = mean(lifeExp),
+    weighted_mean_lifeExp_by_pop = weighted.mean(lifeExp, pop)
+  )
+
+# display as table
+means %>% 
+  knitr::kable()
+```
+
+```{r echo=FALSE}
+means %>% 
+  ggplot() +
+  # make a line plot with points for vanilla_mean_lifeExp
+  geom_line(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
+  geom_point(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
+  # make a line plot with points for weighted_mean_lifeExp_by_pop
+  geom_line(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
+  geom_point(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
+  # add legend for two lines
+  scale_color_discrete("Mean type")
+```
+</div>
+
+<div class="clearer"></div>
+
+## Table stretch goal: there are some really nice fancy table helper packages.
+
+We show one example (not very fancy) using pander and xtable respectively, assuming these two packages have been already installed.
+
+```{r}
+library(pander)
+library(xtable)
+```
+
+
+### pander
+
+```{r}
+emphasize.strong.cols(1)
+emphasize.italics.cells(which(means >= 60, arr.ind = TRUE))
+pandoc.table(means)
+```
+
+
+### xtable
+
+```{r}
+xtable(means)
+```
+
 
 # Notes
 
 # References
+- [pander: An R Pandoc Writer](http://rapporter.github.io/pander/)
+- [The xtable Gallery](https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf)
