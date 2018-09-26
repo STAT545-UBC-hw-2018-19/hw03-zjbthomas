@@ -2613,7 +2613,7 @@ print(xtable(means), type="html")
 ```
 
 <!-- html table generated in R 3.5.1 by xtable 1.8-3 package -->
-<!-- Tue Sep 25 22:20:23 2018 -->
+<!-- Tue Sep 25 22:24:59 2018 -->
 <table border=1>
 <tr> <th>  </th> <th> year </th> <th> vanilla_mean_lifeExp </th> <th> weighted_mean_lifeExp_by_pop </th>  </tr>
   <tr> <td align="right"> 1 </td> <td align="right"> 1952 </td> <td align="right"> 49.06 </td> <td align="right"> 48.94 </td> </tr>
