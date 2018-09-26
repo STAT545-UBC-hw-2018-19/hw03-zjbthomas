@@ -13486,7 +13486,6 @@ countries_with_overall_gdp %&gt;%
 <h1>But I want to do more!</h1>
 <div id="layout-stretch-goal-get-table-and-figure-side-by-side." class="section level2">
 <h2>Layout stretch goal: get table and figure side-by-side.</h2>
-<p><strong>The following part only works for HTML, please refer to <a href="hw03_gapminder.html" class="uri">hw03_gapminder.html</a> if you are reading GitHub Markdown.</strong></p>
 <p>We directly use code form the third task, but put the table and figure side-by-side.</p>
 <style type="text/css">
 .twoC {width: 100%}
@@ -13499,8 +13498,8 @@ countries_with_overall_gdp %&gt;%
 <thead>
 <tr class="header">
 <th align="right">year</th>
-<th align="right">vanilla_mean_lifeExp</th>
-<th align="right">weighted_mean_lifeExp_by_pop</th>
+<th align="right">vanilla_mean</th>
+<th align="right">weighted_mean</th>
 </tr>
 </thead>
 <tbody>
@@ -13581,67 +13580,281 @@ library(xtable)</code></pre>
 <h3>pander</h3>
 <pre class="r"><code>emphasize.strong.cols(1)
 emphasize.italics.cells(which(means &gt;= 60, arr.ind = TRUE))
-pandoc.table(means)</code></pre>
-<pre><code>## 
-## ----------------------------------------------------------------
-##    year     vanilla_mean_lifeExp   weighted_mean_lifeExp_by_pop 
-## ---------- ---------------------- ------------------------------
-##  **1952**          49.06                      48.94             
-## 
-##  **1957**          51.51                      52.12             
-## 
-##  **1962**          53.61                      52.32             
-## 
-##  **1967**          55.68                      56.98             
-## 
-##  **1972**          57.65                      59.51             
-## 
-##  **1977**          59.57                     *61.24*            
-## 
-##  **1982**         *61.53*                    *62.88*            
-## 
-##  **1987**         *63.21*                    *64.42*            
-## 
-##  **1992**         *64.16*                    *65.65*            
-## 
-##  **1997**         *65.01*                    *66.85*            
-## 
-##  **2002**         *65.69*                    *67.84*            
-## 
-##  **2007**         *67.01*                    *68.92*            
-## ----------------------------------------------------------------</code></pre>
+pander(means)</code></pre>
+<table style="width:90%;">
+<colgroup>
+<col width="15%"></col>
+<col width="31%"></col>
+<col width="43%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">year</th>
+<th align="center">vanilla_mean_lifeExp</th>
+<th align="center">weighted_mean_lifeExp_by_pop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>1952</strong></td>
+<td align="center">49.06</td>
+<td align="center">48.94</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>1957</strong></td>
+<td align="center">51.51</td>
+<td align="center">52.12</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>1962</strong></td>
+<td align="center">53.61</td>
+<td align="center">52.32</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>1967</strong></td>
+<td align="center">55.68</td>
+<td align="center">56.98</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>1972</strong></td>
+<td align="center">57.65</td>
+<td align="center">59.51</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>1977</strong></td>
+<td align="center">59.57</td>
+<td align="center"><em>61.24</em></td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>1982</strong></td>
+<td align="center"><em>61.53</em></td>
+<td align="center"><em>62.88</em></td>
+</tr>
+<tr class="even">
+<td align="center"><strong>1987</strong></td>
+<td align="center"><em>63.21</em></td>
+<td align="center"><em>64.42</em></td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>1992</strong></td>
+<td align="center"><em>64.16</em></td>
+<td align="center"><em>65.65</em></td>
+</tr>
+<tr class="even">
+<td align="center"><strong>1997</strong></td>
+<td align="center"><em>65.01</em></td>
+<td align="center"><em>66.85</em></td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>2002</strong></td>
+<td align="center"><em>65.69</em></td>
+<td align="center"><em>67.84</em></td>
+</tr>
+<tr class="even">
+<td align="center"><strong>2007</strong></td>
+<td align="center"><em>67.01</em></td>
+<td align="center"><em>68.92</em></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="xtable" class="section level3">
 <h3>xtable</h3>
-<pre class="r"><code>xtable(means)</code></pre>
-<pre><code>## % latex table generated in R 3.5.1 by xtable 1.8-3 package
-## % Tue Sep 25 21:44:26 2018
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{rrrr}
-##   \hline
-##  &amp; year &amp; vanilla\_mean\_lifeExp &amp; weighted\_mean\_lifeExp\_by\_pop \\ 
-##   \hline
-## 1 &amp; 1952 &amp; 49.06 &amp; 48.94 \\ 
-##   2 &amp; 1957 &amp; 51.51 &amp; 52.12 \\ 
-##   3 &amp; 1962 &amp; 53.61 &amp; 52.32 \\ 
-##   4 &amp; 1967 &amp; 55.68 &amp; 56.98 \\ 
-##   5 &amp; 1972 &amp; 57.65 &amp; 59.51 \\ 
-##   6 &amp; 1977 &amp; 59.57 &amp; 61.24 \\ 
-##   7 &amp; 1982 &amp; 61.53 &amp; 62.88 \\ 
-##   8 &amp; 1987 &amp; 63.21 &amp; 64.42 \\ 
-##   9 &amp; 1992 &amp; 64.16 &amp; 65.65 \\ 
-##   10 &amp; 1997 &amp; 65.01 &amp; 66.85 \\ 
-##   11 &amp; 2002 &amp; 65.69 &amp; 67.84 \\ 
-##   12 &amp; 2007 &amp; 67.01 &amp; 68.92 \\ 
-##    \hline
-## \end{tabular}
-## \end{table}</code></pre>
+<pre class="r"><code>print(xtable(means), type=&quot;html&quot;)</code></pre>
+<!-- html table generated in R 3.5.1 by xtable 1.8-3 package -->
+<!-- Tue Sep 25 22:20:23 2018 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+year
+</th>
+<th>
+vanilla_mean_lifeExp
+</th>
+<th>
+weighted_mean_lifeExp_by_pop
+</th>
+</tr>
+<tr>
+<td align="right">
+1
+</td>
+<td align="right">
+1952
+</td>
+<td align="right">
+49.06
+</td>
+<td align="right">
+48.94
+</td>
+</tr>
+<tr>
+<td align="right">
+2
+</td>
+<td align="right">
+1957
+</td>
+<td align="right">
+51.51
+</td>
+<td align="right">
+52.12
+</td>
+</tr>
+<tr>
+<td align="right">
+3
+</td>
+<td align="right">
+1962
+</td>
+<td align="right">
+53.61
+</td>
+<td align="right">
+52.32
+</td>
+</tr>
+<tr>
+<td align="right">
+4
+</td>
+<td align="right">
+1967
+</td>
+<td align="right">
+55.68
+</td>
+<td align="right">
+56.98
+</td>
+</tr>
+<tr>
+<td align="right">
+5
+</td>
+<td align="right">
+1972
+</td>
+<td align="right">
+57.65
+</td>
+<td align="right">
+59.51
+</td>
+</tr>
+<tr>
+<td align="right">
+6
+</td>
+<td align="right">
+1977
+</td>
+<td align="right">
+59.57
+</td>
+<td align="right">
+61.24
+</td>
+</tr>
+<tr>
+<td align="right">
+7
+</td>
+<td align="right">
+1982
+</td>
+<td align="right">
+61.53
+</td>
+<td align="right">
+62.88
+</td>
+</tr>
+<tr>
+<td align="right">
+8
+</td>
+<td align="right">
+1987
+</td>
+<td align="right">
+63.21
+</td>
+<td align="right">
+64.42
+</td>
+</tr>
+<tr>
+<td align="right">
+9
+</td>
+<td align="right">
+1992
+</td>
+<td align="right">
+64.16
+</td>
+<td align="right">
+65.65
+</td>
+</tr>
+<tr>
+<td align="right">
+10
+</td>
+<td align="right">
+1997
+</td>
+<td align="right">
+65.01
+</td>
+<td align="right">
+66.85
+</td>
+</tr>
+<tr>
+<td align="right">
+11
+</td>
+<td align="right">
+2002
+</td>
+<td align="right">
+65.69
+</td>
+<td align="right">
+67.84
+</td>
+</tr>
+<tr>
+<td align="right">
+12
+</td>
+<td align="right">
+2007
+</td>
+<td align="right">
+67.01
+</td>
+<td align="right">
+68.92
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div id="notes" class="section level1">
 <h1>Notes</h1>
+<ul>
+<li>Currently I do not know how to modify texts of x axis in facetting figures. I can only either suppress all of them, or they mess up (as shown in this document).</li>
+<li>I do not like the way to show a table and a figure side-by-side. The reason is, it can be only used in HTML, but on GitHub it does not support direct viewing of HTML.</li>
+</ul>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

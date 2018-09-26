@@ -6,4 +6,4 @@
 
 This repo contains the following files:
 - This [README](README.md) file; 
-- A [R markdown](hw03_gapminder.rmd) file for Homework 03. This R Markdown file is the source code used by R Studio only. If you want to see the final results/graphs/tables, please refer to [HTML](hw03_gapminder.html) (recommended) or [GitHub Markdown](hw03_gapminder.md). 
+- A [R markdown](hw03_gapminder.rmd) file for Homework 03. This R Markdown file is the source code used by R Studio only. If you want to see the final results/graphs/tables, please refer to [HTML preview](https://htmlpreview.github.io/?https://github.com/STAT545-UBC-students/hw03-zjbthomas/blob/master/hw03_gapminder.html) (recommended) or [knitted HTML](hw03_gapminder.html).

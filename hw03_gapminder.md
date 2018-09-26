@@ -1,10 +1,10 @@
 ---
 title: "STAT 545A Homework 3"
-author: Junbin ZHANG
-date: Sept 25, 2018
+author: "Junbin ZHANG"
+date: "Sept 25, 2018"
 output:
   html_document:
-    keep_md: TRUE
+    keep_md: true
 ---
 
 # Bring rectangular data in
@@ -2523,8 +2523,6 @@ Though we notice some flactuations in these lines, we somehow can conclude that 
 
 ## Layout stretch goal: get table and figure side-by-side.
 
-**The following part only works for HTML, please refer to [hw03_gapminder.html](hw03_gapminder.html) if you are reading GitHub Markdown.**
-
 We directly use code form the third task, but put the table and figure side-by-side.
 
 <style type="text/css">
@@ -2537,20 +2535,20 @@ We directly use code form the third task, but put the table and figure side-by-s
 <div class="twoC">
 
 
- year   vanilla_mean_lifeExp   weighted_mean_lifeExp_by_pop
------  ---------------------  -----------------------------
- 1952               49.05762                       48.94424
- 1957               51.50740                       52.12189
- 1962               53.60925                       52.32438
- 1967               55.67829                       56.98431
- 1972               57.64739                       59.51478
- 1977               59.57016                       61.23726
- 1982               61.53320                       62.88176
- 1987               63.21261                       64.41635
- 1992               64.16034                       65.64590
- 1997               65.01468                       66.84934
- 2002               65.69492                       67.83904
- 2007               67.00742                       68.91909
+ year   vanilla_mean   weighted_mean
+-----  -------------  --------------
+ 1952       49.05762        48.94424
+ 1957       51.50740        52.12189
+ 1962       53.60925        52.32438
+ 1967       55.67829        56.98431
+ 1972       57.64739        59.51478
+ 1977       59.57016        61.23726
+ 1982       61.53320        62.88176
+ 1987       63.21261        64.41635
+ 1992       64.16034        65.64590
+ 1997       65.01468        66.84934
+ 2002       65.69492        67.83904
+ 2007       67.00742        68.91909
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 </div>
@@ -2574,76 +2572,67 @@ library(xtable)
 ```r
 emphasize.strong.cols(1)
 emphasize.italics.cells(which(means >= 60, arr.ind = TRUE))
-pandoc.table(means)
+pander(means)
 ```
 
-```
-## 
-## ----------------------------------------------------------------
-##    year     vanilla_mean_lifeExp   weighted_mean_lifeExp_by_pop 
-## ---------- ---------------------- ------------------------------
-##  **1952**          49.06                      48.94             
-## 
-##  **1957**          51.51                      52.12             
-## 
-##  **1962**          53.61                      52.32             
-## 
-##  **1967**          55.68                      56.98             
-## 
-##  **1972**          57.65                      59.51             
-## 
-##  **1977**          59.57                     *61.24*            
-## 
-##  **1982**         *61.53*                    *62.88*            
-## 
-##  **1987**         *63.21*                    *64.42*            
-## 
-##  **1992**         *64.16*                    *65.65*            
-## 
-##  **1997**         *65.01*                    *66.85*            
-## 
-##  **2002**         *65.69*                    *67.84*            
-## 
-##  **2007**         *67.01*                    *68.92*            
-## ----------------------------------------------------------------
-```
+
+----------------------------------------------------------------
+   year     vanilla_mean_lifeExp   weighted_mean_lifeExp_by_pop 
+---------- ---------------------- ------------------------------
+ **1952**          49.06                      48.94             
+
+ **1957**          51.51                      52.12             
+
+ **1962**          53.61                      52.32             
+
+ **1967**          55.68                      56.98             
+
+ **1972**          57.65                      59.51             
+
+ **1977**          59.57                     *61.24*            
+
+ **1982**         *61.53*                    *62.88*            
+
+ **1987**         *63.21*                    *64.42*            
+
+ **1992**         *64.16*                    *65.65*            
+
+ **1997**         *65.01*                    *66.85*            
+
+ **2002**         *65.69*                    *67.84*            
+
+ **2007**         *67.01*                    *68.92*            
+----------------------------------------------------------------
 
 
 ### xtable
 
 
 ```r
-xtable(means)
+print(xtable(means), type="html")
 ```
 
-```
-## % latex table generated in R 3.5.1 by xtable 1.8-3 package
-## % Tue Sep 25 21:44:26 2018
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{rrrr}
-##   \hline
-##  & year & vanilla\_mean\_lifeExp & weighted\_mean\_lifeExp\_by\_pop \\ 
-##   \hline
-## 1 & 1952 & 49.06 & 48.94 \\ 
-##   2 & 1957 & 51.51 & 52.12 \\ 
-##   3 & 1962 & 53.61 & 52.32 \\ 
-##   4 & 1967 & 55.68 & 56.98 \\ 
-##   5 & 1972 & 57.65 & 59.51 \\ 
-##   6 & 1977 & 59.57 & 61.24 \\ 
-##   7 & 1982 & 61.53 & 62.88 \\ 
-##   8 & 1987 & 63.21 & 64.42 \\ 
-##   9 & 1992 & 64.16 & 65.65 \\ 
-##   10 & 1997 & 65.01 & 66.85 \\ 
-##   11 & 2002 & 65.69 & 67.84 \\ 
-##   12 & 2007 & 67.01 & 68.92 \\ 
-##    \hline
-## \end{tabular}
-## \end{table}
-```
-
+<!-- html table generated in R 3.5.1 by xtable 1.8-3 package -->
+<!-- Tue Sep 25 22:20:23 2018 -->
+<table border=1>
+<tr> <th>  </th> <th> year </th> <th> vanilla_mean_lifeExp </th> <th> weighted_mean_lifeExp_by_pop </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td align="right"> 1952 </td> <td align="right"> 49.06 </td> <td align="right"> 48.94 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td align="right"> 1957 </td> <td align="right"> 51.51 </td> <td align="right"> 52.12 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td align="right"> 1962 </td> <td align="right"> 53.61 </td> <td align="right"> 52.32 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td align="right"> 1967 </td> <td align="right"> 55.68 </td> <td align="right"> 56.98 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td align="right"> 1972 </td> <td align="right"> 57.65 </td> <td align="right"> 59.51 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td align="right"> 1977 </td> <td align="right"> 59.57 </td> <td align="right"> 61.24 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td align="right"> 1982 </td> <td align="right"> 61.53 </td> <td align="right"> 62.88 </td> </tr>
+  <tr> <td align="right"> 8 </td> <td align="right"> 1987 </td> <td align="right"> 63.21 </td> <td align="right"> 64.42 </td> </tr>
+  <tr> <td align="right"> 9 </td> <td align="right"> 1992 </td> <td align="right"> 64.16 </td> <td align="right"> 65.65 </td> </tr>
+  <tr> <td align="right"> 10 </td> <td align="right"> 1997 </td> <td align="right"> 65.01 </td> <td align="right"> 66.85 </td> </tr>
+  <tr> <td align="right"> 11 </td> <td align="right"> 2002 </td> <td align="right"> 65.69 </td> <td align="right"> 67.84 </td> </tr>
+  <tr> <td align="right"> 12 </td> <td align="right"> 2007 </td> <td align="right"> 67.01 </td> <td align="right"> 68.92 </td> </tr>
+   </table>
 
 # Notes
+- Currently I do not know how to modify texts of x axis in facetting figures. I can only either suppress all of them, or they mess up (as shown in this document).
+- I do not like the way to show a table and a figure side-by-side. The reason is, it can be only used in HTML, but on GitHub it does not support direct viewing of HTML.
 
 # References
 - [pander: An R Pandoc Writer](http://rapporter.github.io/pander/)

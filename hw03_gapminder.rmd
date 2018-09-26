@@ -3,9 +3,8 @@ title: "STAT 545A Homework 3"
 author: "Junbin ZHANG"
 date: "Sept 25, 2018"
 output:
-  pdf_document: default
   html_document:
-    keep_md: yes
+    keep_md: true
 ---
 
 # Bring rectangular data in
@@ -345,8 +344,6 @@ Though we notice some flactuations in these lines, we somehow can conclude that 
 
 ## Layout stretch goal: get table and figure side-by-side.
 
-**The following part only works for HTML, please refer to [hw03_gapminder.html](hw03_gapminder.html) if you are reading GitHub Markdown.**
-
 We directly use code form the third task, but put the table and figure side-by-side.
 
 <style type="text/css">
@@ -359,17 +356,15 @@ We directly use code form the third task, but put the table and figure side-by-s
 <div class="twoC">
 
 ```{r results='asis', echo=FALSE}
-means <- gapminder %>% 
+gapminder %>% 
   # group by year
   group_by(year) %>% 
   # calculate vanilla mean and weighted mean
   summarize(
-    vanilla_mean_lifeExp = mean(lifeExp),
-    weighted_mean_lifeExp_by_pop = weighted.mean(lifeExp, pop)
-  )
-
-# display as table
-means %>% 
+    vanilla_mean = mean(lifeExp),
+    weighted_mean = weighted.mean(lifeExp, pop)
+  ) %>% 
+  # display as table
   knitr::kable()
 ```
 
@@ -404,18 +399,19 @@ library(xtable)
 ```{r}
 emphasize.strong.cols(1)
 emphasize.italics.cells(which(means >= 60, arr.ind = TRUE))
-pandoc.table(means)
+pander(means)
 ```
 
 
 ### xtable
 
-```{r}
-xtable(means)
+```{r results='asis'}
+print(xtable(means), type="html")
 ```
 
-
 # Notes
+- Currently I do not know how to modify texts of x axis in facetting figures. I can only either suppress all of them, or they mess up (as shown in this document).
+- I do not like the way to show a table and a figure side-by-side. The reason is, it can be only used in HTML, but on GitHub it does not support direct viewing of HTML.
 
 # References
 - [pander: An R Pandoc Writer](http://rapporter.github.io/pander/)
