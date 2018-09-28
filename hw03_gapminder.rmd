@@ -6,19 +6,22 @@ output:
   html_document:
     keep_md: true
     toc: true
+    theme: readable
 ---
 
 # Bring rectangular data in
 ```{r}
 ## load gapminder
-library(gapminder)
+suppressPackageStartupMessages(library(gapminder))
 ## load tidyverse
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 ```
 
 # Tasks
 
-## Get the maximum and minimum of GDP per capita for all continents.
+## Task #1
+
+**Get the maximum and minimum of GDP per capita for all continents.**
 
 We first create a table to show the maximum and minimum of GDP per capita for all continents.
 
@@ -89,7 +92,9 @@ gapminder %>%
 
 From the table and figure, we notice the maximum and minimum values of gdpPercap are different in different continents. They also appear in different countries and years. The scatterplot provides a better view, except we cannot get which countries has the maximum/minimum gdpPercap.
 
-## Look at the spread of GDP per capita within the continents.
+## Task #2
+
+**Look at the spread of GDP per capita within the continents.**
 
 Let's show a table with the range, mean and deviation of GDP per capita within the continents.
 
@@ -135,7 +140,9 @@ gapminder %>%
 
 A table provides accurate numbers on the spread of GDP per capita, but it cannot show the details inside the data. While histogram and boxplot provide better summaries (e.g. the boxplot contains outliers). Comparing histogram and boxplot, histogram only counts data within the same bins, while boxplot also shows some statistics facts (like quartiles) of data.
 
-## Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.
+## Task #3
+
+**Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.**
 
 Let's calculate the weighted mean of life expectancy, weighting by population.
 
@@ -172,7 +179,9 @@ means %>%
 
 Basically, the life expectancy tends to increase thoughout the years.
 
-## How is life expectancy changing over time on different continents?
+## Task #4
+
+**How is life expectancy changing over time on different continents?**
 
 Let's first use a table to show the trend of how life expectancy changes. We also calculate the changes in every five years.
 
@@ -186,7 +195,8 @@ changes <- gapminder %>%
   ) %>% 
   # calculate absolute change and relative change
   mutate(
-    change_in_five_years = mean_lifeExp - lag(mean_lifeExp)
+    change_in_five_years = mean_lifeExp - lag(mean_lifeExp),
+    accumulate_change = mean_lifeExp- first(mean_lifeExp)
   )
 
 # display the table
@@ -220,11 +230,25 @@ changes %>%
   geom_point()
 ```
 
+```{r}
+changes %>%
+  # year as x axis and accumulate_change as y axis
+  ggplot(aes(year, accumulate_change)) +
+  # facetting by continent
+  facet_wrap(~continent, scales="free_y")+
+  # make a line plot with points
+  geom_line() +
+  geom_point()
+```
+
 From the above two figures, we get to know:
+
 - Except Africa suffered from a decrement between 1997 and 2002, all the continents have increment throughout the years.
 - Generally speaking, except Oceania, the speeds of lifeExp grows of other continents become smaller and smaller.
 
-## Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+## Task #5 
+
+**Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy - you decide - a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.**
 
 Let's first know the range and mean of worldwide life expectancy, so we can decide a benchmark.
 
@@ -252,8 +276,11 @@ lifeExpCheck <- gapminder %>%
   # select only necessary columns
   select(country, year, lifeExp, low_lifeExp)
 
-# display the table
-lifeExpCheck %>% 
+# show previews
+head(lifeExpCheck) %>% 
+  knitr::kable()
+
+tail(lifeExpCheck) %>% 
   knitr::kable()
 ```
 
@@ -269,7 +296,9 @@ lifeExpCheck %>%
 
 From the figure, we know that the numbers of countries with low lifeExp become smaller and smller over the years.
 
-## Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.
+## Task #6
+
+**Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.**
 
 Let's try to list data in countries in Americas first, and see if we can find something intersting.
 
@@ -282,8 +311,11 @@ countries <- gapminder %>%
   # group by country and year
   group_by(country, year)
 
-# display the table
-countries %>% 
+# show previews
+head(countries) %>% 
+  knitr::kable()
+
+tail(countries) %>% 
   knitr::kable()
 ```
 
