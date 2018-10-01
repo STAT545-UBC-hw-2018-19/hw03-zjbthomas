@@ -100,7 +100,9 @@ gapminder %>%
   # make it a scatterplot
   geom_point() +
   # facetting using continent
-  facet_wrap(~continent, scales="free_y")
+  facet_wrap(~continent, scales="free_y") +
+  # make a better x axis
+  scale_x_continuous(breaks=scales::pretty_breaks(n=3))
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
@@ -154,7 +156,9 @@ gapminder %>%
   # facetting by continent
   facet_wrap(~continent, scales="free") +
   # make it a histogram
-  geom_histogram(bins=30)
+  geom_histogram(bins=30)  +
+  # make a better x axis
+  scale_x_continuous(breaks=scales::pretty_breaks(n=3))
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
@@ -518,12 +522,14 @@ We try to explore the following things.
 countries %>% 
   # pop as x axis and lifeExp as y axis
   ggplot(aes(x=pop, y=lifeExp)) +
-  # scale lifeExp by log10
+  # scale y axis by log10
   scale_y_log10() +
   # facetting by country
   facet_wrap(~country, scales="free") +
   # make a line plot
-  geom_line()
+  geom_line() +
+  # make a better x axis
+  scale_x_continuous(breaks=NULL)
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
@@ -546,7 +552,11 @@ countries_with_overall_gdp %>%
   # facetting by country
   facet_wrap(~country, scales="free") +
   # make a line plot
-  geom_line()
+  geom_line() +
+  # scale y axis by log10
+  scale_y_log10() +
+  # make a better x axis
+  scale_x_continuous(breaks=scales::pretty_breaks(n=2))
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
@@ -562,10 +572,12 @@ countries_with_overall_gdp %>%
   ggplot(aes(x=overall_gdp, y=lifeExp)) +
   # facetting by country
   facet_wrap(~country, scales="free") +
-  # scale overall_gdp by log10
-  scale_x_log10() +
+  # scale y axis by log10
+  scale_y_log10() +
   # make it a line plot
-  geom_line()
+  geom_line() +
+  # make a better x axis
+  scale_x_continuous(breaks=NULL)
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
@@ -666,7 +678,7 @@ print(xtable(means), type="html")
 ```
 
 <!-- html table generated in R 3.5.1 by xtable 1.8-3 package -->
-<!-- Fri Sep 28 15:41:56 2018 -->
+<!-- Mon Oct 01 11:42:01 2018 -->
 <table border=1>
 <tr> <th>  </th> <th> year </th> <th> vanilla_mean_lifeExp </th> <th> weighted_mean_lifeExp_by_pop </th>  </tr>
   <tr> <td align="right"> 1 </td> <td align="right"> 1952 </td> <td align="right"> 49.06 </td> <td align="right"> 48.94 </td> </tr>
@@ -684,7 +696,7 @@ print(xtable(means), type="html")
    </table>
 
 # Notes
-- Currently I do not know how to modify texts of x axis in facetting figures. I can only either suppress all of them, or they mess up (as shown in this document).
+- Currently I do not know how to make better labels of x axis in facetting figures. Now I can only  suppress all of them for some figures in section "Task #6".
 - I do not like the way to show a table and a figure side-by-side. The reason is, it can be only used in HTML, but on GitHub it does not support direct viewing of HTML.
 
 # References
