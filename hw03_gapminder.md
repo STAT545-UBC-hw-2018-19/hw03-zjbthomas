@@ -64,7 +64,13 @@ min_country <- gapminder %>%
   select(min_country_year)
 
 # display table with combined data
-data.frame(continent=data$continent, max_gdpPercap=data$max_gdpPercap, max_country, min_gdpPercap=data$min_gdpPercap, min_country) %>% 
+data.frame(
+  continent = data$continent,
+  max_gdpPercap = data$max_gdpPercap,
+  max_country,
+  min_gdpPercap = data$min_gdpPercap,
+  min_country
+) %>% 
   knitr::kable()
 ```
 
@@ -85,7 +91,7 @@ Let's show them on a scatterplot.
 gapminder %>%
   # create a new column to indicate whether a data point is maximum or minimum gdpPercap
   mutate(
-    max_min_gdpPercap=ifelse(
+    max_min_gdpPercap = ifelse(
       gdpPercap %in% data$max_gdpPercap,
       "Maximum",
       ifelse(
@@ -96,13 +102,13 @@ gapminder %>%
       )
   ) %>% 
   # year as x axis and gdpPercap as y axis, use max_min_gdpPercap as color
-  ggplot(aes(year, gdpPercap, color=max_min_gdpPercap), alpha=0.1) +
+  ggplot(aes(year, gdpPercap, color = max_min_gdpPercap), alpha = 0.1) +
   # make it a scatterplot
   geom_point() +
   # facetting using continent
-  facet_wrap(~continent, scales="free_y") +
+  facet_wrap(~continent, scales = "free_y") +
   # make a better x axis
-  scale_x_continuous(breaks=scales::pretty_breaks(n=3))
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 3))
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
@@ -123,13 +129,13 @@ gapminder %>%
   # calculate summaries
   summarize(
     # calculate minimum
-    min_gdpPercap=min(gdpPercap),
+    min_gdpPercap = min(gdpPercap),
     # calculate maximum
-    max_gdpPercap=min(gdpPercap),
+    max_gdpPercap = min(gdpPercap),
     # calculate mean
-    mean_gdpPercap=mean(gdpPercap),
+    mean_gdpPercap = mean(gdpPercap),
     # calculate standard deviation
-    sd_gdpPercap=sd(gdpPercap)
+    sd_gdpPercap = sd(gdpPercap)
   ) %>% 
   # display the table
   knitr::kable()
@@ -152,13 +158,13 @@ We can use histogram and boxplot to do the same task. Notice that in histogram, 
 ```r
 gapminder %>% 
   # gdpPercap as x axis
-  ggplot(aes(gdpPercap, color=continent)) +
+  ggplot(aes(gdpPercap, color = continent)) +
   # facetting by continent
-  facet_wrap(~continent, scales="free") +
+  facet_wrap(~continent, scales = "free") +
   # make it a histogram
-  geom_histogram(bins=30)  +
+  geom_histogram(bins = 30)  +
   # make a better x axis
-  scale_x_continuous(breaks=scales::pretty_breaks(n=3))
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 3))
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
@@ -167,7 +173,9 @@ gapminder %>%
 ```r
 gapminder %>% 
   # continent as x axis, gdpPercap as y axis
-  ggplot(aes(x=continent, y=gdpPercap)) +
+  ggplot(aes(continent, gdpPercap)) +
+  # scale y axis by log10
+  scale_y_log10() +
   # make it a boxplot
   geom_boxplot()
 ```
@@ -222,11 +230,11 @@ Let's draw some line plots to show them.
 means %>% 
   ggplot() +
   # make a line plot with points for vanilla_mean_lifeExp
-  geom_line(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
-  geom_point(aes(x=year, y=vanilla_mean_lifeExp, color="vanilla_mean_lifeExp")) +
+  geom_line(aes(year, vanilla_mean_lifeExp, color = "vanilla_mean_lifeExp")) +
+  geom_point(aes(year, vanilla_mean_lifeExp, color = "vanilla_mean_lifeExp")) +
   # make a line plot with points for weighted_mean_lifeExp_by_pop
-  geom_line(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
-  geom_point(aes(x=year, y=weighted_mean_lifeExp_by_pop, color="weighted_mean_lifeExp_by_pop")) +
+  geom_line(aes(year, weighted_mean_lifeExp_by_pop, color = "weighted_mean_lifeExp_by_pop")) +
+  geom_point(aes(year, weighted_mean_lifeExp_by_pop, color = "weighted_mean_lifeExp_by_pop")) +
   # add legend for two lines
   scale_color_discrete("Mean type")
 ```
@@ -346,11 +354,11 @@ changes %>%
 ```r
 changes %>%
   # remove NA values
-  filter(change_in_five_years != "NA") %>% 
+  filter(!is.na(change_in_five_years)) %>% 
   # year as x axis and change_in_five_years as y axis
   ggplot(aes(year, change_in_five_years)) +
   # facetting by continent
-  facet_wrap(~continent, scales="free_y")+
+  facet_wrap(~continent, scales = "free_y")+
   # make a line plot with points
   geom_line() +
   geom_point()
@@ -364,7 +372,7 @@ changes %>%
   # year as x axis and accumulate_change as y axis
   ggplot(aes(year, accumulate_change)) +
   # facetting by continent
-  facet_wrap(~continent, scales="free_y")+
+  facet_wrap(~continent, scales = "free_y")+
   # make a line plot with points
   geom_line() +
   geom_point()
@@ -456,7 +464,7 @@ To show the abundance of countries with low lifeExp, we can simply count the num
 ```r
 lifeExpCheck %>% 
   # year as x axis, and show the portion of low_lifeExp
-  ggplot(aes(x=year, fill=low_lifeExp)) +
+  ggplot(aes(year, fill = low_lifeExp)) +
   # make it a bar plot
   geom_bar()
 ```
@@ -521,11 +529,11 @@ We try to explore the following things.
 ```r
 countries %>% 
   # pop as x axis and lifeExp as y axis
-  ggplot(aes(x=pop, y=lifeExp)) +
+  ggplot(aes(pop, lifeExp)) +
   # scale y axis by log10
   scale_y_log10() +
   # facetting by country
-  facet_wrap(~country, scales="free") +
+  facet_wrap(~country, scales = "free") +
   # make a line plot
   geom_line() +
   # make a better x axis
@@ -548,15 +556,15 @@ countries_with_overall_gdp <- countries %>%
 
 countries_with_overall_gdp %>% 
   # year as x axis and overall_gdp as y axis
-  ggplot(aes(x=year, y=overall_gdp)) +
+  ggplot(aes(year, overall_gdp)) +
   # facetting by country
-  facet_wrap(~country, scales="free") +
+  facet_wrap(~country, scales = "free") +
   # make a line plot
   geom_line() +
   # scale y axis by log10
   scale_y_log10() +
   # make a better x axis
-  scale_x_continuous(breaks=scales::pretty_breaks(n=2))
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 2))
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
@@ -569,15 +577,15 @@ So we can notice some flactuations in these resultant lines. But it is a trend t
 ```r
 countries_with_overall_gdp %>% 
   # overall_gdp as x axis and lifeExp as y axis
-  ggplot(aes(x=overall_gdp, y=lifeExp)) +
+  ggplot(aes(overall_gdp, lifeExp)) +
   # facetting by country
-  facet_wrap(~country, scales="free") +
+  facet_wrap(~country, scales = "free") +
   # scale y axis by log10
   scale_y_log10() +
   # make it a line plot
   geom_line() +
   # make a better x axis
-  scale_x_continuous(breaks=NULL)
+  scale_x_continuous(breaks = NULL)
 ```
 
 ![](hw03_gapminder_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
@@ -626,8 +634,8 @@ We show one example (not very fancy) using pander and xtable respectively, assum
 
 
 ```r
-library(pander)
-library(xtable)
+suppressPackageStartupMessages(library(pander))
+suppressPackageStartupMessages(library(xtable))
 ```
 
 
@@ -674,11 +682,11 @@ pander(means)
 
 
 ```r
-print(xtable(means), type="html")
+print(xtable(means), type = "html")
 ```
 
 <!-- html table generated in R 3.5.1 by xtable 1.8-3 package -->
-<!-- Mon Oct 01 11:42:01 2018 -->
+<!-- Tue Oct 02 10:30:05 2018 -->
 <table border=1>
 <tr> <th>  </th> <th> year </th> <th> vanilla_mean_lifeExp </th> <th> weighted_mean_lifeExp_by_pop </th>  </tr>
   <tr> <td align="right"> 1 </td> <td align="right"> 1952 </td> <td align="right"> 49.06 </td> <td align="right"> 48.94 </td> </tr>
